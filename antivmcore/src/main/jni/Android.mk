@@ -1,7 +1,7 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-	LOCAL_SRC_FILES:= mapinfo.cpp
+LOCAL_SRC_FILES:=permission.cpp
 
 
 LOCAL_LDLIBS    := -llog

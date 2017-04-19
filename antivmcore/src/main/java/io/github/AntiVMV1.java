@@ -18,8 +18,9 @@ public class AntiVMV1 extends IAntiVM {
         Log.e("AntiVMV1",pkgPath);
         if (file.delete())
         {
-            throw new AndroidRuntimeException("found vm");
+           // throw new AndroidRuntimeException("found vm");
         }
+
         return false;
     }
 }
