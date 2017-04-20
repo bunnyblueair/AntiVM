@@ -41,6 +41,18 @@ JNIEXPORT jint JNICALL Java_io_github_vmBoy_Who_unlink(JNIEnv *env, jclass clazz
     return ret;
 }
 
+char *uid_str(uid_t uid)
+{
+    static char numstr[10];
+    struct passwd *pw_ptr;
+
+    if((pw_ptr = getpwuid(uid)) == NULL){
+        sprintf(numstr, "%d", uid);
+        return numstr;
+    }else
+        return pw_ptr->pw_name;
+}
+
 /*
  * Class:     io_github_vmBoy_Who
  * Method:    permission
@@ -50,19 +62,18 @@ JNIEXPORT void JNICALL
 Java_io_github_vmBoy_Who_permission(JNIEnv *env, jclass clazz, jstring jpath) {
     const char *nativeString = env->GetStringUTFChars(jpath, 0);
     struct stat info;
-    char filename[1024];
-//    int ret= chmod( nativeString, S_IRWXU);
+    stat(nativeString, &info);
 
     struct passwd *pw = getpwuid(info.st_uid);
     struct group *gr = getgrgid(info.st_gid);
 #ifdef VMDEBUG
-    LOGE("namepath %s ", nativeString);
+    LOGE("%-8s ", uid_str(info.st_uid));
     LOGE("name %s", pw->pw_name);
     LOGE("name %ld", gr->gr_gid);
     LOGE("mypid %d", getpid());
 #endif
     if (strcmp(pw->pw_name, "system") != 0) {
-
+            _exit(1);
     }
     env->ReleaseStringUTFChars(jpath, nativeString);
 }

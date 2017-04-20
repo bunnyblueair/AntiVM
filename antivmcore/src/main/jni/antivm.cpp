@@ -5,7 +5,7 @@ __BEGIN_DECLS
 
 
 // int faccessat(int dirfd, const char *pathname, int mode, int flags);
-LIBC_PROTECT(int, faccessat, int dirfd, const char *pathname, int mode, int flags) {
+int faccessat( int dirfd, const char *pathname, int mode, int flags) {
 
     int ret = syscall(__NR_faccessat, dirfd, pathname, mode, flags);
     return ret;
@@ -13,13 +13,13 @@ LIBC_PROTECT(int, faccessat, int dirfd, const char *pathname, int mode, int flag
 
 
 // int fchmodat(int dirfd, const char *pathname, mode_t mode, int flags);
-LIBC_PROTECT(int, fchmodat, int dirfd, const char *pathname, mode_t mode, int flags) {
+int fchmodat(int dirfd, const char *pathname, mode_t mode, int flags) {
 
     int ret = syscall(__NR_fchmodat, dirfd, pathname, mode, flags);
     return ret;
 }
 // int fchmod(const char *pathname, mode_t mode);
-LIBC_PROTECT(int, fchmod, const char *pathname, mode_t mode) {
+int fchmod(const char *pathname, mode_t mode) {
 
     int ret = syscall(__NR_chmod, pathname, mode);
 
@@ -28,14 +28,14 @@ LIBC_PROTECT(int, fchmod, const char *pathname, mode_t mode) {
 
 
 // int fstatat(int dirfd, const char *pathname, struct stat *buf, int flags);
-LIBC_PROTECT(int, fstatat, int dirfd, const char *pathname, struct stat *buf, int flags) {
+int fstatat( int dirfd, const char *pathname, struct stat *buf, int flags) {
 
     int ret = syscall(__NR_fstatat64, dirfd, pathname, buf, flags);
 
     return ret;
 }
 // int fstat(const char *pathname, struct stat *buf, int flags);
-LIBC_PROTECT(int, fstat, const char *pathname, struct stat *buf) {
+int fstat(const char *pathname, struct stat *buf) {
 
     int ret = syscall(__NR_fstat64, pathname, buf);
 
@@ -44,13 +44,13 @@ LIBC_PROTECT(int, fstat, const char *pathname, struct stat *buf) {
 
 
 // int mknodat(int dirfd, const char *pathname, mode_t mode, dev_t dev);
-LIBC_PROTECT(int, mknodat, int dirfd, const char *pathname, mode_t mode, dev_t dev) {
+int mknodat( int dirfd, const char *pathname, mode_t mode, dev_t dev) {
 
     int ret = syscall(__NR_mknodat, dirfd, pathname, mode, dev);
     return ret;
 }
 // int mknod(const char *pathname, mode_t mode, dev_t dev);
-LIBC_PROTECT(int, mknod, const char *pathname, mode_t mode, dev_t dev) {
+int mknod( const char *pathname, mode_t mode, dev_t dev) {
 
     int ret = syscall(__NR_mknod, pathname, mode, dev);
     return ret;
@@ -58,7 +58,7 @@ LIBC_PROTECT(int, mknod, const char *pathname, mode_t mode, dev_t dev) {
 
 
 // int utimensat(int dirfd, const char *pathname, const struct timespec times[2], int flags);
-LIBC_PROTECT(int, utimensat, int dirfd, const char *pathname, const struct timespec times[2],
+int utimensat( int dirfd, const char *pathname, const struct timespec times[2],
              int flags) {
     int ret = syscall(__NR_utimensat, dirfd, pathname, times, flags);
     return ret;
@@ -66,7 +66,7 @@ LIBC_PROTECT(int, utimensat, int dirfd, const char *pathname, const struct times
 
 
 // int fchownat(int dirfd, const char *pathname, uid_t owner, gid_t group, int flags);
-LIBC_PROTECT(int, fchownat, int dirfd, const char *pathname, uid_t owner, gid_t group, int flags) {
+int fchownat(int dirfd, const char *pathname, uid_t owner, gid_t group, int flags) {
 
 
     int ret = syscall(__NR_fchownat, dirfd, pathname, owner, group, flags);
@@ -74,7 +74,7 @@ LIBC_PROTECT(int, fchownat, int dirfd, const char *pathname, uid_t owner, gid_t 
 }
 
 // int chroot(const char *pathname);
-LIBC_PROTECT(int, chroot, const char *pathname) {
+int chroot( const char *pathname) {
 
     int ret = syscall(__NR_chroot, pathname);
 
@@ -83,14 +83,14 @@ LIBC_PROTECT(int, chroot, const char *pathname) {
 
 
 // int renameat(int olddirfd, const char *oldpath, int newdirfd, const char *newpath);
-LIBC_PROTECT(int, renameat, int olddirfd, const char *oldpath, int newdirfd, const char *newpath) {
+int renameat( int olddirfd, const char *oldpath, int newdirfd, const char *newpath) {
 
     int ret = syscall(__NR_renameat, olddirfd, oldpath, newdirfd, newpath);
 
     return ret;
 }
 // int rename(const char *oldpath, const char *newpath);
-LIBC_PROTECT(int, rename, const char *oldpath, const char *newpath) {
+int rename( const char *oldpath, const char *newpath) {
 
     int ret = syscall(__NR_rename, oldpath, newpath);
 
@@ -99,7 +99,7 @@ LIBC_PROTECT(int, rename, const char *oldpath, const char *newpath) {
 
 
 // int unlinkat(int dirfd, const char *pathname, int flags);
-LIBC_PROTECT(int, unlinkat, int dirfd, const char *pathname, int flags) {
+int unlinkat(int dirfd, const char *pathname, int flags) {
 
     int ret = syscall(__NR_unlinkat, dirfd, pathname, flags);
 
