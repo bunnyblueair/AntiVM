@@ -23,7 +23,7 @@
  *
  */
 
-package bunnyblue.io.antivm;
+package io.bunnyblue.antivm.sample;
 
 import android.app.Activity;
 import android.os.Bundle;
