@@ -38,9 +38,8 @@ public class Who {
      * TODO need impl
      * check map file
      *
-     * @param pid
      */
-    public static native void map(int pid);
+    public static native void map();
 
     /**
      * try delete apk file,if run in vm,should be deleted

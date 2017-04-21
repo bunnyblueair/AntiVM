@@ -8,37 +8,38 @@
 #include "antivm.h"
 
 // /data/app/bunnyblue.io.antivm-1/oat/x86/base.odex
-int filterPackage(char *string) {
+char *filterPackage(char *string) {
     int all_len = strlen(string);
     char *s = strchr(string, '/data/app/');
+    // LOGD("filterPackage input %s",string);
     if (strcmp(s, string) != 0) {
-        return -1;
+        return NULL;
     }
     int head_len = 10;
-    LOGE("filterPackage 1  %s ", s);
+    // LOGE("filterPackage 1  %s ", s);
     s = strchr(s, '/');
 
-    LOGE("filterPackage 2 %s ", s);
+    //  LOGE("filterPackage 2 %s ", s);
     s = strchr(s, '/');
-    LOGE("filterPackage 3 %s ", s);
+    // LOGE("filterPackage 3 %s ", s);
     char *end = strchr(string, '-');
-    LOGE("filterPackage 4 %s ", end);
+    // LOGE("filterPackage 4 %s ", end);
     int end_len = strlen(end);
     int pkglen = all_len - end_len - head_len;
     int n = 32;
     //char *src = "some really really long, more than 32 chars, string."
-    char dst[128] = {'\0'};
+    //char dst[128] = {'\0'};
+    char *dst = (char *) calloc(128, sizeof(char));
 
     strncpy(dst, string + 10, pkglen);
-    if (strcmp(dst, "bunnyblue.io.antivm") != 0) {
-        LOGE("fault pkg %s ", dst);
-        _exit(0);
-    }
+//    if (strcmp(dst, "bunnyblue.io.antivm") != 0) {
+//        LOGE("fault pkg %s ", dst);
+//        _exit(0);
+//    }
     //dst[n] = '\0';
-    LOGE("filterPackage ----pkglen  %d %s  ", pkglen, dst);
+    return dst;
 
-
-    return (-1);
+    // return NULL;
 }
 
 int isOdex(char *string) {
@@ -65,10 +66,9 @@ static mapinfo *parse_maps_line(char *line) {
         return 0;
 
     if (isOdex(line) != 0) {
-        //LOGE("find ------odex %s",line);
         return 0;
     }
-    LOGE("find odex %s", line);
+
     //LOGE("line[20] %c %c %c %c",line[18],line[19],line[20],line[21]);
 /*	if (line[18] != 'r'||line[19] != '-'||line[20] != '-'||line[21] != 's')
 		return 0;*/
@@ -76,7 +76,7 @@ static mapinfo *parse_maps_line(char *line) {
     mi = (mapinfo *) malloc(sizeof(mapinfo) + (len - 47));
     if (mi == 0)
         return 0;
-
+    mi->pkgRef = 1;
     mi->start = strtoul(line, 0, 16);
     mi->end = strtoul(line + 9, 0, 16);
     /* To be filled in parse_elf_info if the mapped section starts with
@@ -84,19 +84,39 @@ static mapinfo *parse_maps_line(char *line) {
      */
     mi->next = 0;
     strcpy(mi->name, line + 49);
-    LOGE("find mi->name %s", mi->name);
+    fixPath(mi->name);
     return mi;
 }
 
+int updatePkg(mapinfo *milist, mapinfo *mi) {
+    mapinfo *ptr = milist;
+    while (ptr != NULL) {
+        if (strcmp(mi->name, ptr->name) == 0) {
+            ptr->pkgRef = ptr->pkgRef + mi->pkgRef;
+            return 0;
+        }
+        ptr = ptr->next;
+    }
+    return 1;
+}
 mapinfo *init_mapinfo(int pid) {
     struct mapinfo *milist = NULL;
+
     char data[1024];
     sprintf(data, "/proc/%d/maps", pid);
     FILE *fp = fopen(data, "r");
     if (fp) {
         while (fgets(data, sizeof(data), fp)) {
             mapinfo *mi = parse_maps_line(data);
+
             if (mi) {
+                char *fixed = filterPackage(mi->name);
+                strcpy(mi->name, fixed);
+                free(fixed);
+                if (updatePkg(milist, mi) == 0) {
+
+                    continue;
+                }
                 mi->next = milist;
                 milist = mi;
             }

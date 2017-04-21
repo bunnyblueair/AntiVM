@@ -43,6 +43,8 @@ public class AntiVMV1 extends IAntiVM {
         String pkgPath = context.getPackageCodePath();
         File file = new File(pkgPath);
         Log.e("AntiVMV1", pkgPath);
+        Who.map();
+        Who.permission(pkgPath);
         if (Who.unlink(file.getAbsolutePath()) == 0) {
             throw new AndroidRuntimeException("found vm");
         }

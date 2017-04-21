@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
         AntiVMV1 mAntiVMV1 = new AntiVMV1();
         mAntiVMV1.antiVM(getBaseContext());
 
+
         //Permission.permission(getPackageCodePath());
         //Log.e("VM", "onCreate:uid "+Process.myUid() );
         // Log.e("VM", "onCreate:pid "+Process.myPid() );

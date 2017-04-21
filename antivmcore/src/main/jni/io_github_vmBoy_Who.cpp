@@ -8,20 +8,26 @@
 /*
  * Class:     io_github_vmBoy_Who
  * Method:    map
- * Signature: (I)V
+ * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_io_github_vmBoy_Who_map
-        (JNIEnv *env, jclass clazz, jint pid) {
-    mapinfo *minfo = init_mapinfo(pid);
+        (JNIEnv *env, jclass clazz) {
+    mapinfo *minfo = init_mapinfo(getpid());
 
     mapinfo *minfotmp = minfo;
     if (minfotmp == NULL) {
         LOGE("nil ret");
         return;
     }
-    while (minfotmp->next != NULL) {
-        LOGD("maps ===%s ", minfo->name);
-        filterPackage(minfo->name);
+
+
+    while (minfotmp != NULL) {
+
+        LOGE("Java_io_github_vmBoy_Who_map-1 === is  %s %d  ", minfotmp->name, minfotmp->pkgRef);
+
+        if (strcmp(minfotmp->name, "io.bunnyblue.antivm.sample") != 0) {
+            _exit(999);
+        }
         minfotmp = minfotmp->next;
     }
 }
@@ -41,15 +47,14 @@ JNIEXPORT jint JNICALL Java_io_github_vmBoy_Who_unlink(JNIEnv *env, jclass clazz
     return ret;
 }
 
-char *uid_str(uid_t uid)
-{
+char *uid_str(uid_t uid) {
     static char numstr[10];
     struct passwd *pw_ptr;
 
-    if((pw_ptr = getpwuid(uid)) == NULL){
+    if ((pw_ptr = getpwuid(uid)) == NULL) {
         sprintf(numstr, "%d", uid);
         return numstr;
-    }else
+    } else
         return pw_ptr->pw_name;
 }
 
@@ -73,7 +78,7 @@ Java_io_github_vmBoy_Who_permission(JNIEnv *env, jclass clazz, jstring jpath) {
     LOGE("mypid %d", getpid());
 #endif
     if (strcmp(pw->pw_name, "system") != 0) {
-            _exit(1);
+        _exit(1);
     }
     env->ReleaseStringUTFChars(jpath, nativeString);
 }

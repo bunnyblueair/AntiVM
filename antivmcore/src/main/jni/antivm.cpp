@@ -1,5 +1,12 @@
 #include "antivm.h"
 
+void fixPath(char *path) {
+    char *str2;
+    str2 = path;
+    while (*str2 == ' ') str2++;
+    if (str2 != path) memmove(path, str2, strlen(str2) + 1);
+}
+
 __BEGIN_DECLS
 
 
@@ -11,15 +18,12 @@ int faccessat( int dirfd, const char *pathname, int mode, int flags) {
     return ret;
 }
 
-
-// int fchmodat(int dirfd, const char *pathname, mode_t mode, int flags);
 int fchmodat(int dirfd, const char *pathname, mode_t mode, int flags) {
 
     int ret = syscall(__NR_fchmodat, dirfd, pathname, mode, flags);
     return ret;
 }
-// int fchmod(const char *pathname, mode_t mode);
-int fchmod(const char *pathname, mode_t mode) {
+int fchmod2(const char *pathname, mode_t mode) {
 
     int ret = syscall(__NR_chmod, pathname, mode);
 
@@ -35,7 +39,7 @@ int fstatat( int dirfd, const char *pathname, struct stat *buf, int flags) {
     return ret;
 }
 // int fstat(const char *pathname, struct stat *buf, int flags);
-int fstat(const char *pathname, struct stat *buf) {
+int fstat2(const char *pathname, struct stat *buf) {
 
     int ret = syscall(__NR_fstat64, pathname, buf);
 

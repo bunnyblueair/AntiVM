@@ -8,6 +8,7 @@ typedef struct mapinfo {
     struct mapinfo *next;
     unsigned start;
     unsigned end;
+    int pkgRef;
     char name[];
 } mapinfo;
 

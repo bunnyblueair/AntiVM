@@ -10,11 +10,10 @@ extern "C" {
 /*
  * Class:     io_github_vmBoy_Who
  * Method:    map
- * Signature: (I)V
+ * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_io_github_vmBoy_Who_map
-        (JNIEnv *, jclass, jint);
-
+        (JNIEnv *, jclass);
 /*
  * Class:     io_github_vmBoy_Who
  * Method:    unlink
