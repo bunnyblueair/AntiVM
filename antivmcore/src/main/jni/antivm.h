@@ -30,7 +30,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <android/log.h>
-#include "antivm.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include <jni.h>
 

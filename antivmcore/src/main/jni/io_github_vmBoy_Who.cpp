@@ -2,6 +2,7 @@
 #include "io_github_vmBoy_Who.h"
 #include "antivm.h"
 #include "mapinfo.h"
+#include "cmdline.h"
 /* Header for class io_github_vmBoy_Who */
 
 
@@ -23,9 +24,9 @@ JNIEXPORT void JNICALL Java_io_github_vmBoy_Who_map
 
     while (minfotmp != NULL) {
 
-        LOGE("Java_io_github_vmBoy_Who_map-1 === is  %s %d  ", minfotmp->name, minfotmp->pkgRef);
+        LOGE("  %s %d  %s   ", minfotmp->name, minfotmp->pkgRef, antivm_default_package());
 
-        if (strcmp(minfotmp->name, "io.bunnyblue.antivm.sample") != 0) {
+        if (strcmp(minfotmp->name, antivm_default_package()) != 0) {
             _exit(999);
         }
         minfotmp = minfotmp->next;

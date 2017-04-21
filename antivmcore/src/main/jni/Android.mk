@@ -3,7 +3,8 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES:=antivm.cpp \
         mapinfo.cpp \
-        io_github_vmBoy_Who.cpp
+        io_github_vmBoy_Who.cpp\
+        cmdline.cpp
 
 
 LOCAL_LDLIBS    := -llog
