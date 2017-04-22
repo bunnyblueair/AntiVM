@@ -6,15 +6,19 @@ many thing can do
 
 protect your android app,anti for VM.
 
-![AntiVM](art/run_1.jpeg)
+
 
 
 # tested app
 
 | VMApp       |            package | Status           |
-| -------------|  |---------  |:-------------:|
+| -------------|  ---------  |:-------------:|
 |Parallel Space－Multi Accounts/平行空间 |  com.lbe.parallel.intl | tested |
 |双开助手    | com.excelliance.multiaccounts | tested |
 |Dual Space|com.fineclouds.dualspace|tested|
 |GO Multiple/Go双开|com.jiubang.commerce.gomultiple|tested|
 |DualGenius/双开精灵|com.dual.dualgenius|tested|
+
+
+# Crashed VM
+![AntiVM](art/run_1.jpeg)
