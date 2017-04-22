@@ -31,6 +31,7 @@ JNIEXPORT void JNICALL Java_io_github_vmBoy_Who_map
         }
         minfotmp = minfotmp->next;
     }
+    deinit_mapinfo(minfo);
 }
 
 /*
