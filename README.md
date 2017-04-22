@@ -1,7 +1,7 @@
 # AntiVM
 This project is a android anti-vm lib,just forbidden VM App run your app.
 
-# 关于这是一个Android虚拟机检测库，意在未授权的情况下载虚拟机上非法运行
+# 关于这是一个Android虚拟机检测库，意在未授权的情况下禁止在虚拟机App上非法运行
 many thing can do
 
 protect your android app,anti for VM.
