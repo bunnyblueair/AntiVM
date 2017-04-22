@@ -29,13 +29,25 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import io.github.AntiVMImplDefault;
+import io.github.antivm.impl.DexDetectDefault;
+import io.github.antivm.impl.ResInJectDetectDefault;
 
 public class MainActivity extends Activity {
+    public void testResource() {
+        ResInJectDetectDefault resInJectDetectDefault = new ResInJectDetectDefault();
+        resInJectDetectDefault.detectResource(getApplicationContext());
+    }
 
+    public void testDexSec() {
+        DexDetectDefault dexDetectDefault = new DexDetectDefault();
+        dexDetectDefault.dexDetect(getBaseContext());
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        testResource();
+        testDexSec();
         AntiVMImplDefault mAntiVMV1 = new AntiVMImplDefault();
         mAntiVMV1.antiVM(getBaseContext());
 
