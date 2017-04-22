@@ -23,7 +23,7 @@
  *
  */
 
-package io.github;
+package io.github.antivm;
 
 import android.content.Context;
 
@@ -32,6 +32,12 @@ import android.content.Context;
  */
 
 public abstract class IAntiVM {
+    /**
+     * vm detect status
+     *
+     * @param context
+     * @return true =run on vm ,flase=you should ignore
+     */
     public abstract boolean antiVM(Context context);
 
 }

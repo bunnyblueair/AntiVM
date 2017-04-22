@@ -23,27 +23,23 @@
  *
  */
 
-package io.bunnyblue.antivm.sample;
+package io.github.antivm.impl;
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.content.Context;
 
-import io.github.AntiVMImplDefault;
+import io.github.antivm.IAntiVM;
+import io.github.vmBoy.Who;
 
-public class MainActivity extends Activity {
+/**
+ * Created by bunnyblue on 4/22/17.
+ */
 
+public class AntiVMCloner extends IAntiVM {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        AntiVMImplDefault mAntiVMV1 = new AntiVMImplDefault();
-        mAntiVMV1.antiVM(getBaseContext());
-
-
-        //Permission.permission(getPackageCodePath());
-        //Log.e("VM", "onCreate:uid "+Process.myUid() );
-        // Log.e("VM", "onCreate:pid "+Process.myPid() );
-        // Log.e("VM", "onCreate: "+getPackageManager().getNameForUid(-1289088464) );
-        // MapSatus.map(Process.myPid());
+    public boolean antiVM(Context context) {
+        if (Who.map().equals("-1")) {
+            return true;
+        }
+        return false;
     }
 }

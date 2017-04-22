@@ -23,32 +23,38 @@
  *
  */
 
-package io.github;
+package io.github.antivm.impl;
 
 import android.content.Context;
-import android.util.AndroidRuntimeException;
-import android.util.Log;
 
 import java.io.File;
 
+import io.github.antivm.IAntiVM;
 import io.github.vmBoy.Who;
 
 /**
- * Created by bunny on 07/04/2017.
+ * detect uninstall app,this app should not exist in /data/app
+ * and this apk owner should be system.
+ * so we try delete pkg.apk use delete,if failure,try unlink,
+ * then detect owner of apk
+ * Created by bunnyblue on 4/22/17.
  */
 
-public class AntiVMV1 extends IAntiVM {
+public class AntiVMUninstalled extends IAntiVM {
     @Override
     public boolean antiVM(Context context) {
         String pkgPath = context.getPackageCodePath();
         File file = new File(pkgPath);
-        Log.e("AntiVMV1", pkgPath);
-        Who.map();
-        Who.permission(pkgPath);
-        if (Who.unlink(file.getAbsolutePath()) == 0) {
-            throw new AndroidRuntimeException("found vm");
+        if (file.delete()) {
+            return true;
         }
+        if (Who.unlink(pkgPath) == 0) {//删除成功
 
+            return true;
+        }
+        if (Who.permission(pkgPath) == -1) {
+            return true;
+        }
         return false;
     }
 }

@@ -23,27 +23,36 @@
  *
  */
 
-package io.bunnyblue.antivm.sample;
+package io.github;
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.content.Context;
+import android.os.Process;
 
-import io.github.AntiVMImplDefault;
+import io.github.antivm.IAntiVM;
+import io.github.antivm.impl.AntiVMCloner;
+import io.github.antivm.impl.AntiVMUninstalled;
 
-public class MainActivity extends Activity {
+/**
+ * Created by bunny on 07/04/2017.
+ */
+
+public class AntiVMImplDefault extends IAntiVM {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        AntiVMImplDefault mAntiVMV1 = new AntiVMImplDefault();
-        mAntiVMV1.antiVM(getBaseContext());
+    public boolean antiVM(Context context) {
+        AntiVMUninstalled antiVMUninstalled = new AntiVMUninstalled();
+        if (antiVMUninstalled.antiVM(context)) {
+            //DO Crash
+            Process.killProcess(Process.myPid());
+            return true;
+        }
+        AntiVMCloner antiVMCloner = new AntiVMCloner();
+        if (antiVMCloner.antiVM(context)) {
+            //DO Crash
+            Process.killProcess(Process.myPid());
+            return true;
+        }
 
-
-        //Permission.permission(getPackageCodePath());
-        //Log.e("VM", "onCreate:uid "+Process.myUid() );
-        // Log.e("VM", "onCreate:pid "+Process.myPid() );
-        // Log.e("VM", "onCreate: "+getPackageManager().getNameForUid(-1289088464) );
-        // MapSatus.map(Process.myPid());
+        return false;
     }
 }

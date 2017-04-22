@@ -11,14 +11,14 @@
  * Method:    map
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_io_github_vmBoy_Who_map
+JNIEXPORT jstring JNICALL Java_io_github_vmBoy_Who_map
         (JNIEnv *env, jclass clazz) {
     mapinfo *minfo = init_mapinfo(getpid());
 
     mapinfo *minfotmp = minfo;
     if (minfotmp == NULL) {
         LOGE("nil ret");
-        return;
+        return env->NewStringUTF("-1");
     }
 
 
@@ -28,10 +28,12 @@ JNIEXPORT void JNICALL Java_io_github_vmBoy_Who_map
 
         if (strcmp(minfotmp->name, antivm_default_package()) != 0) {
             _exit(999);
+
         }
         minfotmp = minfotmp->next;
     }
     deinit_mapinfo(minfo);
+     return env->NewStringUTF("0");
 }
 
 /*
@@ -63,9 +65,9 @@ char *uid_str(uid_t uid) {
 /*
  * Class:     io_github_vmBoy_Who
  * Method:    permission
- * Signature: (Ljava/lang/String;)V
+ * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT void JNICALL
+JNIEXPORT jint JNICALL
 Java_io_github_vmBoy_Who_permission(JNIEnv *env, jclass clazz, jstring jpath) {
     const char *nativeString = env->GetStringUTFChars(jpath, 0);
     struct stat info;
@@ -79,10 +81,15 @@ Java_io_github_vmBoy_Who_permission(JNIEnv *env, jclass clazz, jstring jpath) {
     LOGE("name %ld", gr->gr_gid);
     LOGE("mypid %d", getpid());
 #endif
+    env->ReleaseStringUTFChars(jpath, nativeString);
     if (strcmp(pw->pw_name, "system") != 0) {
         _exit(1);
+        return -1;
+    }else{
+    return 0;
     }
-    env->ReleaseStringUTFChars(jpath, nativeString);
+
+
 }
 
 
