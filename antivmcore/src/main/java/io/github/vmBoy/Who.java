@@ -45,7 +45,7 @@ public class Who {
      * try delete apk file,if run in vm,should be deleted
      *
      * @param path
-     * @return
+     * @return unlink status
      */
     public static native int unlink(String path);
 
@@ -61,7 +61,7 @@ public class Who {
      * TODO impl next version
      * dump your app runtime,you can send runtime data to your server
      *
-     * @return
+     * @return info
      */
     public native static String dumpEnvStatus();
 }

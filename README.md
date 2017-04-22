@@ -22,3 +22,9 @@ protect your android app,anti for VM.
 
 # Crashed VM
 ![AntiVM](art/run_1.jpeg)
+
+# Usage
+
+```gradle
+ compile 'io.bunnyblue:antivmcore:1.0.0'
+```

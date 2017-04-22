@@ -23,19 +23,55 @@
  *
  */
 
+
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+java.util.Properties properties = new java.util.Properties()
+if (file(project.rootDir.getAbsolutePath() + File.separator + 'local.properties').exists()) {
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+} else {
+
+    println "local.properties not found ,disable deploy"
+}
+ext {
+    bintrayRepo = 'AntiVM'
+    bintrayName = 'AntiVM'
+
+    publishedGroupId = 'io.bunnyblue'
+    libraryName = 'AntiVM'
+    artifact = 'antivmcore'
+
+    libraryDescription = 'Android AntiVM Core Lib'
+
+    siteUrl = 'https://github.com/bunnyblue/AntiVM'
+    gitUrl = 'https://github.com/bunnyblue/AntiVM.git'
+
+    libraryVersion = "1.0.0"
+
+    developerId = 'bunnyblue'
+    developerName = 'Bunny Blue'
+    developerEmail = 'bunnyblueair@gmail.com'
+    licenseName = 'The MIT License (MIT)'
+    licenseUrl = 'https://raw.githubusercontent.com/bunnyblue/AntiVM/master/LICENSE'
+    allLicenses = ["MIT"]
+}
+
+
+dependencies {
+    compile fileTree(include: '*.jar', dir: 'libs')
+
+}
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        versionCode 1
+        versionName "1.0.0"
         externalNativeBuild {
             ndkBuild {
                 abiFilters "armeabi", "armeabi-v7a", "x86"
@@ -43,25 +79,106 @@ android {
         }
 
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
     externalNativeBuild {
         ndkBuild {
             path 'src/main/jni/Android.mk'
 
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+
+
+}
+group = ext.publishedGroupId
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                name 'antivmcore'
+                packaging 'aar'
+                groupId publishedGroupId
+                artifactId artifact
+
+                // Add your description here
+                // name libraryName
+                description libraryDescription
+                url siteUrl
+
+                // Set your license
+                licenses {
+                    license {
+                        name licenseName
+                        url licenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id developerId
+                        name developerName
+                        email developerEmail
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    testCompile 'junit:junit:4.12'
+
+
+version = ext.libraryVersion
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = libraryDescription
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
+            }
+        }
+    }
 }
